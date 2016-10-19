@@ -23,13 +23,13 @@ object Bidding
     val requests: Array[BidRequest] = mapper.readValue(bidRequestsJSON.head, classOf[Array[BidRequest]])
     val campaignArray: Array[Campaign] = mapper.readValue(campaignsJSON.head, classOf[Array[Campaign]])
 
-    val matcher: Array[MatchValue] = for {
+    val matchedValues: Array[MatchValue] = for {
       bidRequest <- requests
       campaign <- campaignArray
       if(bidRequest.country == campaign.targetedCountry && campaign.getDimensions.contains(bidRequest.getDimensions))
     } yield MatchValue(bidRequest requestId, campaign campaignId)
 
-    println(mapper.writeValueAsString(ProgramOutput(matcher, System.currentTimeMillis - start)))
+    println(mapper.writeValueAsString(ProgramOutput(matchedValues, System.currentTimeMillis - start)))
 
   }
 
